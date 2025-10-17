@@ -1,35 +1,54 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
-import { Remitente } from '../../remitente/entities/remitente.entity';
-// import { Destinatario } from '../../destinatario/entities/destinatario.entity';
-// import { Mercancia } from '../../mercancia/entities/mercancia.entity';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  JoinColumn,
+  CreateDateColumn,
+  OneToMany,
+} from 'typeorm';
+import { Remitente } from 'src/remitente/entities/remitente.entity';
+import { Mercancia } from 'src/mercancia/entities/mercancia.entity';
+//import { Destinatario } from 'src/destinatario/entities/destinatario.entity';
+//import { Mercancia } from 'src/mercancia/entities/mercancia.entity';
 
-@Entity('envios')
+@Entity({ name: 'envio' })
 export class Envio {
   @PrimaryGeneratedColumn()
-  id_envio!: number;
+  id_envio: number;
 
-  @Column({ type: 'date' })
-  fecha_envio!: Date;
+  @CreateDateColumn({ type: 'timestamp' })
+  fecha_envio: Date;
 
-  @Column({ length: 100 })
-  origen!: string;
+  @Column({ type: 'enum', enum: ['MX', 'US'] })
+  origen: 'MX' | 'US';
 
-  @Column({ length: 100 })
-  destino!: string;
+  @Column({ type: 'enum', enum: ['MX', 'US'] })
+  destino: 'MX' | 'US';
+
+  @Column({ type: 'enum', enum: ['MX', 'US'] })
+  tipo_cobro: 'MX' | 'US';
 
   @Column({ type: 'decimal', precision: 10, scale: 2 })
-  costo!: number;
+  precio_total: number;
 
-  @Column({ length: 50, default: 'pendiente' })
-  estado!: string;
+  @Column({ type: 'varchar', length: 50 })
+  estado_envio: string;
 
-  // Relaciones
+  @Column({ type: 'boolean', default: false })
+  firma_remitente: boolean;
+
+  // 🔗 Relación con REMITENTE (N:1)
   @ManyToOne(() => Remitente, (remitente) => remitente.envios, { eager: true })
-  remitente!: Remitente;
+  @JoinColumn({ name: 'id_remitente' })
+  remitente: Remitente;
 
-  // @ManyToOne(() => Destinatario, (destinatario) => destinatario.envios, { eager: true })
-  // destinatario!: Destinatario;
+  // 🔗 Relación con DESTINATARIO (N:1)
+  //@ManyToOne(() => Destinatario, (destinatario) => destinatario.envios, { eager: true })
+  //@JoinColumn({ name: 'id_destinatario' })
+  //destinatario: Destinatario;
 
-  // @OneToMany(() => Mercancia, (mercancia) => mercancia.envio)
-  // mercancias!: Mercancia[];
+  // 🔗 Relación con MERCANCIA (1:N)
+  @OneToMany(() => Mercancia, (mercancia) => mercancia.envio, { cascade: true })
+  mercancias: Mercancia[];
 }

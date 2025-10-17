@@ -1,34 +1,43 @@
-// src/envio/dto/create-envio.dto.ts
 import {
-  IsNotEmpty,
-  IsString,
+  IsEnum,
   IsNumber,
-  IsDateString,
   IsOptional,
+  IsBoolean,
+  IsString,
+  ValidateNested,
+  IsArray,
 } from 'class-validator';
+import { Type } from 'class-transformer';
+//import { CreateMercanciaDto } from 'src/mercancia/dto/create-mercancia.dto';
 
 export class CreateEnvioDto {
-  @IsNotEmpty()
-  @IsDateString()
-  fecha_envio: string; // Fecha en formato ISO (YYYY-MM-DD o con hora)
+  @IsEnum(['MX', 'US'])
+  origen: 'MX' | 'US';
 
-  @IsNotEmpty()
+  @IsEnum(['MX', 'US'])
+  destino: 'MX' | 'US';
+
+  @IsEnum(['MX', 'US'])
+  tipo_cobro: 'MX' | 'US';
+
+  @IsNumber()
+  precio_total: number;
+
   @IsString()
-  destino: string; // Ejemplo: "Oaxaca", "Seaside", etc.
+  estado_envio: string;
 
+  @IsBoolean()
   @IsOptional()
-  @IsString()
-  estado_envio?: string; // Ejemplo: "Pendiente", "En tránsito", "Entregado"
+  firma_remitente?: boolean;
 
-  @IsNotEmpty()
   @IsNumber()
-  costo_total: number;
+  id_remitente: number;
 
-  @IsNotEmpty()
   @IsNumber()
-  id_remitente: number; // FK con Remitente
+  id_destinatario: number;
 
-  @IsNotEmpty()
-  @IsNumber()
-  id_destinatario: number; // FK con Destinatario
+  /* @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CreateMercanciaDto)
+  mercancias: CreateMercanciaDto[];*/
 }

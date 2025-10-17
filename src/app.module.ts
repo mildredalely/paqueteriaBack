@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { RemitenteModule } from './remitente/remitente.module';
 import { EnvioModule } from './envio/envio.module';
 import { MercanciaModule } from './mercancia/mercancia.module';
+import { DestinatarioModule } from './destinatario/destinatario.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { MercanciaModule } from './mercancia/mercancia.module';
     RemitenteModule,
     EnvioModule,
     MercanciaModule,
+    DestinatarioModule,
   ],
 })
 export class AppModule {}

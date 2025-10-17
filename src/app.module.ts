@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RemitenteModule } from './remitente/remitente.module';
+import { EnvioModule } from './envio/envio.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { RemitenteModule } from './remitente/remitente.module';
       autoLoadEntities: true,
     }),
     RemitenteModule,
+    EnvioModule,
   ],
 })
 export class AppModule {}

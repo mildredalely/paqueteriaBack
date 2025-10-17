@@ -5,8 +5,10 @@ import {
   ManyToOne,
   JoinColumn,
   CreateDateColumn,
+  OneToMany,
 } from 'typeorm';
 import { Remitente } from 'src/remitente/entities/remitente.entity';
+import { Mercancia } from 'src/mercancia/entities/mercancia.entity';
 //import { Destinatario } from 'src/destinatario/entities/destinatario.entity';
 //import { Mercancia } from 'src/mercancia/entities/mercancia.entity';
 
@@ -47,6 +49,6 @@ export class Envio {
   //destinatario: Destinatario;
 
   // 🔗 Relación con MERCANCIA (1:N)
-  //@OneToMany(() => Mercancia, (mercancia) => mercancia.envio, { cascade: true })
-  //mercancias: Mercancia[];
+  @OneToMany(() => Mercancia, (mercancia) => mercancia.envio, { cascade: true })
+  mercancias: Mercancia[];
 }

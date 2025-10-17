@@ -1,5 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
-//import { Envio } from '../envio/envio.entity';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Envio } from '../../envio/entities/envio.entity';
 
 @Entity('remitentes')
 export class Remitente {
@@ -21,6 +21,6 @@ export class Remitente {
   @Column({ length: 255, nullable: true })
   direccion!: string;
 
-  //@OneToMany(() => Envio, envio => envio.remitente)
-  //envios: Envio[];
+  @OneToMany(() => Envio, (envio) => envio.remitente)
+  envios!: Envio[];
 }

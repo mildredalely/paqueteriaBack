@@ -9,8 +9,7 @@ import {
 } from 'typeorm';
 import { Remitente } from 'src/remitente/entities/remitente.entity';
 import { Mercancia } from 'src/mercancia/entities/mercancia.entity';
-//import { Destinatario } from 'src/destinatario/entities/destinatario.entity';
-//import { Mercancia } from 'src/mercancia/entities/mercancia.entity';
+import { Destinatario } from 'src/destinatario/entities/destinatario.entity';
 
 @Entity({ name: 'envio' })
 export class Envio {
@@ -44,9 +43,11 @@ export class Envio {
   remitente: Remitente;
 
   // 🔗 Relación con DESTINATARIO (N:1)
-  //@ManyToOne(() => Destinatario, (destinatario) => destinatario.envios, { eager: true })
-  //@JoinColumn({ name: 'id_destinatario' })
-  //destinatario: Destinatario;
+  @ManyToOne(() => Destinatario, (destinatario) => destinatario.envios, {
+    eager: true,
+  })
+  @JoinColumn({ name: 'id_destinatario' })
+  destinatario: Destinatario;
 
   // 🔗 Relación con MERCANCIA (1:N)
   @OneToMany(() => Mercancia, (mercancia) => mercancia.envio, { cascade: true })

@@ -4,11 +4,11 @@ import {
   IsOptional,
   IsBoolean,
   IsString,
-  ValidateNested,
   IsArray,
+  ValidateNested,
 } from 'class-validator';
 import { Type } from 'class-transformer';
-//import { CreateMercanciaDto } from 'src/mercancia/dto/create-mercancia.dto';
+import { CreateMercanciaDto } from 'src/mercancia/dto/create-mercancia.dto';
 
 export class CreateEnvioDto {
   @IsEnum(['MX', 'US'])
@@ -36,8 +36,9 @@ export class CreateEnvioDto {
   @IsNumber()
   id_destinatario: number;
 
-  /* @IsArray()
+  @IsArray()
+  @IsOptional()
   @ValidateNested({ each: true })
   @Type(() => CreateMercanciaDto)
-  mercancias: CreateMercanciaDto[];*/
+  mercancias?: CreateMercanciaDto[];
 }

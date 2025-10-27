@@ -4,6 +4,7 @@ import { RemitenteModule } from './remitente/remitente.module';
 import { EnvioModule } from './envio/envio.module';
 import { MercanciaModule } from './mercancia/mercancia.module';
 import { DestinatarioModule } from './destinatario/destinatario.module';
+import { TarifaModule } from './tarifa/tarifa.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { DestinatarioModule } from './destinatario/destinatario.module';
     EnvioModule,
     MercanciaModule,
     DestinatarioModule,
+    TarifaModule,
   ],
 })
 export class AppModule {}

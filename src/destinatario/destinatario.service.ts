@@ -1,26 +1,44 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Destinatario } from './entities/destinatario.entity';
 import { CreateDestinatarioDto } from './dto/create-destinatario.dto';
 import { UpdateDestinatarioDto } from './dto/update-destinatario.dto';
 
 @Injectable()
 export class DestinatarioService {
-  create(createDestinatarioDto: CreateDestinatarioDto) {
-    return 'This action adds a new destinatario';
+  constructor(
+    @InjectRepository(Destinatario)
+    private destinatarioRepository: Repository<Destinatario>,
+  ) {}
+
+  async create(data: CreateDestinatarioDto): Promise<Destinatario> {
+    const nuevo = this.destinatarioRepository.create(data);
+    return await this.destinatarioRepository.save(nuevo);
   }
 
-  findAll() {
-    return `This action returns all destinatario`;
+  findAll(): Promise<Destinatario[]> {
+    return this.destinatarioRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} destinatario`;
+  async findOne(id: number): Promise<Destinatario> {
+    const destinatario = await this.destinatarioRepository.findOneBy({
+      id_destinatario: id,
+    });
+
+    if (!destinatario) {
+      throw new NotFoundException(`Destinatario con ID ${id} no encontrado`);
+    }
+
+    return destinatario;
   }
 
-  update(id: number, updateDestinatarioDto: UpdateDestinatarioDto) {
-    return `This action updates a #${id} destinatario`;
+  async update(id: number, data: UpdateDestinatarioDto): Promise<Destinatario> {
+    await this.destinatarioRepository.update(id, data);
+    return this.findOne(id);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} destinatario`;
+  async remove(id: number): Promise<void> {
+    await this.destinatarioRepository.delete(id);
   }
 }

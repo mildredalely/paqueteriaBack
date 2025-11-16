@@ -1,26 +1,44 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Mercancia } from './entities/mercancia.entity';
 import { CreateMercanciaDto } from './dto/create-mercancia.dto';
 import { UpdateMercanciaDto } from './dto/update-mercancia.dto';
 
 @Injectable()
 export class MercanciaService {
-  create(createMercanciaDto: CreateMercanciaDto) {
-    return 'This action adds a new mercancia';
+  constructor(
+    @InjectRepository(Mercancia)
+    private readonly mercanciaRepository: Repository<Mercancia>,
+  ) {}
+
+  async create(data: CreateMercanciaDto): Promise<Mercancia> {
+    const mercancia = this.mercanciaRepository.create(data);
+    return this.mercanciaRepository.save(mercancia);
   }
 
-  findAll() {
-    return `This action returns all mercancia`;
+  findAll(): Promise<Mercancia[]> {
+    return this.mercanciaRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} mercancia`;
+  async findOne(id: number): Promise<Mercancia> {
+    const mercancia = await this.mercanciaRepository.findOne({
+      where: { id_mercancia: id },
+    });
+
+    if (!mercancia) {
+      throw new NotFoundException(`Mercancia con ID ${id} no encontrada`);
+    }
+
+    return mercancia;
   }
 
-  update(id: number, updateMercanciaDto: UpdateMercanciaDto) {
-    return `This action updates a #${id} mercancia`;
+  async update(id: number, data: UpdateMercanciaDto): Promise<Mercancia> {
+    await this.mercanciaRepository.update(id, data);
+    return this.findOne(id);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} mercancia`;
+  async remove(id: number): Promise<void> {
+    await this.mercanciaRepository.delete(id);
   }
 }

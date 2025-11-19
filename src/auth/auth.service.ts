@@ -1,29 +1,30 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import * as bcrypt from 'bcrypt';
-
-interface User {
-  id: number;
-  username: string;
-  passwordHash: string;
-}
-
-
-const users: User[] = [];
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import * as bcrypt from 'bcryptjs';
+import { User } from './user.entity';
 
 @Injectable()
 export class AuthService {
+  constructor(
+    @InjectRepository(User)
+    private userRepo: Repository<User>,
+  ) {}
+
   async register(username: string, password: string) {
-    const exists = users.find(u => u.username === username);
+    const exists = await this.userRepo.findOne({ where: { username } });
     if (exists) throw new Error('Usuario ya existe');
 
     const passwordHash = await bcrypt.hash(password, 10);
-    const user = { id: Date.now(), username, passwordHash };
-    users.push(user);
+    const user = this.userRepo.create({ username, passwordHash });
+
+    await this.userRepo.save(user);
+
     return { message: 'Usuario creado', username };
   }
 
   async login(username: string, password: string) {
-    const user = users.find(u => u.username === username);
+    const user = await this.userRepo.findOne({ where: { username } });
     if (!user) throw new UnauthorizedException('Usuario no encontrado');
 
     const ok = await bcrypt.compare(password, user.passwordHash);
@@ -32,8 +33,8 @@ export class AuthService {
     return { message: 'Login correcto', username: user.username };
   }
 
-  // obtener todos los usuarios (solo debug)
-  getAll() {
-    return users.map(u => ({ id: u.id, username: u.username }));
+  // 👉 FALTA ESTE MÉTODO PARA QUE NO TE MARQUE ERROR
+  async getAll() {
+    return this.userRepo.find();
   }
 }

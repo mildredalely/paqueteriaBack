@@ -10,6 +10,7 @@ import {
 import { EnvioService } from './envio.service';
 import { CreateEnvioDto } from './dto/create-envio.dto';
 import { UpdateEnvioDto } from './dto/update-envio.dto';
+import { UpdateEstadoEnvioDto } from './estado-envio/update-estado-envio.dto';
 
 @Controller('envios')
 export class EnvioController {
@@ -33,6 +34,10 @@ export class EnvioController {
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateEnvioDto: UpdateEnvioDto) {
     return this.envioService.update(+id, updateEnvioDto);
+  }
+  @Patch(':id/estado')
+  actualizarEstado(@Param('id') id: string, @Body() dto: UpdateEstadoEnvioDto) {
+    return this.envioService.actualizarEstado(+id, dto);
   }
 
   @Delete(':id')

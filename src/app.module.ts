@@ -17,7 +17,7 @@ import { TarifaModule } from './tarifa/tarifa.module';
       password: '',
       database: 'envios_app',
       synchronize: true,
-      autoLoadEntities: true,   
+      autoLoadEntities: true,
     }),
 
     RemitenteModule,

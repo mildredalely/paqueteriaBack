@@ -13,7 +13,10 @@ export class MercanciaService {
   ) {}
 
   async create(data: CreateMercanciaDto): Promise<Mercancia> {
-    const mercancia = this.mercanciaRepository.create(data);
+    const mercancia = this.mercanciaRepository.create({
+      ...data,
+      subtotal: data.cantidad * data.precio_unitario, // cálculo automático
+    });
     return this.mercanciaRepository.save(mercancia);
   }
 

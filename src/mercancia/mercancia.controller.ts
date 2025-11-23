@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { MercanciaService } from './mercancia.service';
 import { CreateMercanciaDto } from './dto/create-mercancia.dto';
 import { UpdateMercanciaDto } from './dto/update-mercancia.dto';
@@ -23,7 +31,10 @@ export class MercanciaController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateMercanciaDto: UpdateMercanciaDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateMercanciaDto: UpdateMercanciaDto,
+  ) {
     return this.mercanciaService.update(+id, updateMercanciaDto);
   }
 

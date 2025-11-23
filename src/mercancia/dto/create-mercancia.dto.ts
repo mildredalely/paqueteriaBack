@@ -21,8 +21,9 @@ export class CreateMercanciaDto {
   precio_unitario: number;
 
   @IsNumber()
-  subtotal: number;
-
   @IsOptional()
-  id_tarifa?: number;
+  subtotal?: number;
+
+  //@IsOptional()
+  //d_tarifa?: number;
 }

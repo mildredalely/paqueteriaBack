@@ -10,13 +10,12 @@ import { TarifaModule } from './tarifa/tarifa.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: '',
-      database: 'envios_app',
-      synchronize: true,
+      type: 'postgres',
+      url: process.env.DATABASE_URL || 'postgres://postgres:admin@localhost:5432/paqueteria',
+      synchronize: process.env.NODE_ENV !== 'development',
+      ssl:{
+        rejectUnauthorized: false,
+      },
       autoLoadEntities: true,
     }),
 

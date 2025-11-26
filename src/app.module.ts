@@ -11,8 +11,8 @@ import { TarifaModule } from './tarifa/tarifa.module';
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      url: process.env.DATABASE_URL || 'postgres://postgres:admin@localhost:5432/paqueteria',
-      synchronize: process.env.NODE_ENV !== 'development',
+      url: process.env.DATABASE_URL,
+      synchronize: process.env.NODE_ENV !== 'production',
       ssl:{
         rejectUnauthorized: false,
       },

@@ -9,13 +9,14 @@ import {
 } from '@nestjs/common';
 import { RemitenteService } from './remitente.service';
 import { Remitente } from './entities/remitente.entity';
+import { CreateRemitenteDto } from './dto/create-remitente.dto';
 
 @Controller('remitentes')
 export class RemitenteController {
   constructor(private readonly remitenteService: RemitenteService) {}
 
   @Post()
-  create(@Body() remitente: Remitente) {
+  create(@Body() remitente: CreateRemitenteDto) {
     return this.remitenteService.create(remitente);
   }
 

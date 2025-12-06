@@ -10,6 +10,7 @@ import { TarifaModule } from './tarifa/tarifa.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
+      logging: true,
       type: 'postgres',
       url: process.env.DATABASE_URL,
       synchronize: process.env.NODE_ENV !== 'production',

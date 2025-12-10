@@ -11,6 +11,7 @@ export class CreateDestinatarioDto {
 
   @IsEmail()
   @Length(1, 100)
+  @IsOptional()
   email: string;
 
   @IsOptional()

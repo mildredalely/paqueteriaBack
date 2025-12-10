@@ -12,7 +12,7 @@ export class Remitente {
   @Column({ length: 100 })
   apellido!: string;
 
-  @Column({ unique: true, length: 100 })
+  @Column({ unique: false, length: 100 })
   email!: string;
 
   @Column({ length: 15, nullable: true })
